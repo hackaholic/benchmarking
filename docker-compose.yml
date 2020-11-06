@@ -1,0 +1,46 @@
+version: "3.8"
+
+services:
+  prometheus:
+    build: 
+      dockerfile: Dockerfile
+      context: ./containers/prometheus
+    ports:
+      - "9090:9090"
+
+  cadvisor:
+    image: google/cadvisor:latest
+    ports:
+      - "8080:8080"
+    volumes:
+      - /:/rootfs:ro
+      - /var/run:/var/run:rw
+      - /sys:/sys:ro
+      - /var/lib/docker/:/var/lib/docker:ro 
+
+  grafana:
+    build:
+      dockerfile: Dockerfile
+      context: ./containers/grafana
+    ports:
+      - "3000:3000"
+
+  redis:
+    image: redis:latest
+    deploy:
+      resources:
+        limits:
+          cpus: '0.5'
+          memory: 1024M
+    ports:
+      - "6380:6379"
+
+  memcached:
+    image: memcached:latest
+    deploy:
+      resources:
+        limits:
+          cpus: '.5'
+          memory: 1024M
+    ports:
+      - "11211:11211"

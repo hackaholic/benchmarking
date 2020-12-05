@@ -2,13 +2,23 @@ version: "3.8"
 
 services:
   prometheus:
+    container_name: prometheus
     build: 
       dockerfile: Dockerfile
       context: ./containers/prometheus
     ports:
       - "9090:9090"
 
+  mariyadb:
+    container_name: mariyadb
+    build:
+      dockerfile: Dockerfile
+      context: ./containers/mariyadb
+    ports:
+      - "3306:3306"
+
   cadvisor:
+    container_name: cadvisor
     image: google/cadvisor:latest
     ports:
       - "8080:8080"
@@ -19,6 +29,7 @@ services:
       - /var/lib/docker/:/var/lib/docker:ro 
 
   grafana:
+    container_name: grafana
     build:
       dockerfile: Dockerfile
       context: ./containers/grafana
@@ -26,6 +37,7 @@ services:
       - "3000:3000"
 
   redis:
+    container_name: redis
     image: redis:latest
     deploy:
       resources:
@@ -36,6 +48,7 @@ services:
       - "6380:6379"
 
   memcached:
+    container_name: memcached
     image: memcached:latest
     deploy:
       resources:
